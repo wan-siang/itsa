@@ -1,0 +1,59 @@
+#include    <stdio.h>
+#include    <stdlib.h>
+#include    <ctype.h>
+
+struct num{
+    int num;
+    int cnt;
+};
+
+char *getword(char *line, char *word){
+    char *ptr = line;
+    char *qtr = word;
+    while(isspace(*ptr)) ptr++;
+    while(!isspace(*ptr) && *ptr!='\0') *qtr++=*ptr++;
+    *qtr='\0';
+    if(qtr-word==0){
+        return NULL;
+    }
+    return ptr;
+}
+int main(){
+    struct num arr[20];
+    int n;
+    int total;
+    char line[200];
+    char word[200];
+    int i;
+
+    while(fgets(line, 200, stdin)){
+        char *ptr = line;
+        total=0;
+        int cnt=0;
+        while((ptr=getword(ptr,word))!=NULL){
+            n = atoi(word);
+            total++;
+            for(i=0;i<cnt;i++){
+                if(arr[i].num==n){
+                    arr[i].cnt++;
+                    break;
+                }
+            }
+            if(i==cnt){
+                arr[cnt].num = n;
+                arr[cnt++].cnt=1;
+            }
+        }
+        for(i=0;i<cnt;i++){
+            if(arr[i].cnt>(total/2)){
+                printf("%d\n",arr[i].num);
+                break;
+            }
+        }
+        if(i==cnt){
+            printf("NO\n");
+        }
+    }
+    
+    
+}
