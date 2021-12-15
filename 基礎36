@@ -1,0 +1,21 @@
+#include    <stdio.h>
+
+int main(){
+    int year;
+
+    scanf("%d", &year);
+
+    if(year%4){
+        printf("Common Year\n");
+    }else{
+        if(year%100){
+            printf("Bissextile Year\n");
+        }else{
+            if(year%400){
+                printf("Common Year\n");
+            }else{
+                printf("Bissextile Year\n");
+            }
+        }
+    }
+}
