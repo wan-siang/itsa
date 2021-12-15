@@ -1,0 +1,104 @@
+#include <stdio.h>  
+#include <stdlib.h>  
+#include <string.h>  
+#include <ctype.h>  
+
+#define MaxLen 5000  
+
+char *getword(char *line, char *word);  
+double postfix(char *opd[], int cnt);  
+
+int main()  
+{  
+    char line[MaxLen];  
+    char word[MaxLen];  
+    char *opd[MaxLen];  
+    int i=0,j;  
+    int len;  
+    char *ptr;
+    int result;
+
+    while(fgets(line,MaxLen,stdin))  
+    {  
+        i=0;
+        ptr = line;  
+        while((ptr = getword(ptr,word))!=NULL)  
+        {  
+            len = strlen(word);  
+            opd[i] = (char *)malloc(sizeof(char) * (len+1));  
+            strcpy(opd[i],word);  
+            i++;          
+        }  
+        result = postfix(opd,i);
+        printf("%d\n",result);  
+        for(j=0;j<i;j++){
+            free(opd[j]);
+        }
+    }
+      
+}  
+
+char *getword(char *line, char *word)  
+{  
+    char *ptr = line;  
+    char *qtr = word;   
+
+    while(isspace(*ptr))  
+    {  
+        ptr++;  
+    }  
+    while(!isspace(*ptr) && *ptr!='\0')  
+    {  
+        *qtr++ = *ptr++;  
+    }  
+    *qtr = '\0';  
+
+    if(qtr-word==0)  
+    {  
+        return NULL;  
+    }  
+    return ptr;  
+}  
+
+double postfix(char *opd[], int cnt)  
+{    
+    int i=0; 
+    int stack[MaxLen]; 
+    int top=0; 
+    
+    while(i<cnt) 
+    { 
+        if(strcmp(opd[i],"+")==0) 
+        { 
+            stack[top-2] = stack[top-2] + stack[top-1];
+			top--; 
+        } 
+        else if(strcmp(opd[i],"-")==0) 
+        { 
+			stack[top-2] = stack[top-2] - stack[top-1];
+			top--;
+        } 
+        else if(strcmp(opd[i],"*")==0) 
+        { 
+			stack[top-2] = stack[top-2] * stack[top-1];
+			top--;
+        } 
+        else if(strcmp(opd[i],"/")==0) 
+        { 
+			stack[top-2] = stack[top-2] / stack[top-1];
+			top--;
+        }
+        else if(strcmp(opd[i],"%")==0) 
+        { 
+			stack[top-2] = stack[top-2] % stack[top-1];
+			top--;
+        } 
+        else 
+        { 
+        	stack[top] = atoi(opd[i]);
+        	top++;
+        } 
+        i++; 
+    }
+	return stack[top-1];
+}  
