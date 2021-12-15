@@ -1,0 +1,86 @@
+#include    <stdio.h>
+#include    <string.h>
+#include    <ctype.h>
+#include    <stdlib.h>
+
+struct lnode{
+    char *key;
+    struct lnode *next;
+};
+
+char *getword(char *line, char *word){
+    char *ptr = line;
+    char *qtr = word;
+
+    while(isspace(*ptr)) ptr++;
+    while(!isspace(*ptr) && *ptr!='\0') *qtr++=*ptr++;
+    *qtr='\0';
+    if(word-qtr==0){
+        return NULL;
+    }
+    return ptr;
+}
+
+void lower(char word[]){
+    int len = strlen(word);
+    for(int i=0;i<len;i++){
+        if(isupper(word[i])){
+            word[i] = word[i] -'A'+'a';
+        }
+    }
+}
+
+struct lnode *find(struct lnode *list, char *word){
+    struct lnode *p = list;
+    while(p){
+        if(strcmp(p->key,word)==0){
+            return p;
+        }
+        p = p->next;
+    }
+    return NULL;
+}
+
+struct lnode *insert(struct lnode *list, char *word){
+    struct lnode *p = (struct lnode *)malloc(sizeof(struct lnode));
+    p->key = strdup(word);
+    p->next = list;
+    
+    if(list==NULL){
+        p->next = NULL;
+        return p;
+    }
+    struct lnode *q = list;
+    while(q->next){
+        q = q->next;
+    }
+    q->next = p;
+    p->next = NULL;
+    return list;
+}
+
+void traverse(struct lnode *list){
+    struct lnode *p = list;
+    while(p->next){
+        printf("%s ",p->key);
+        p = p -> next;
+    }
+    printf("%s\n",p->key);
+}
+int main(){
+    char line[1050];
+    char word[1050];
+    char *ptr;
+    struct lnode *list=NULL;
+
+    fgets(line,1050,stdin);
+    ptr = line;
+    while((ptr=getword(ptr,word))!=NULL){
+        lower(word);
+        //find, insert
+        if(find(list, word)==NULL){
+            list = insert(list,word);
+        }
+    }
+    traverse(list);
+}
