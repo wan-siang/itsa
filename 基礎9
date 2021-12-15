@@ -1,0 +1,14 @@
+#include    <stdio.h>
+
+int main(){
+    int N;
+    int sum = 0;
+    int i = 3;
+    
+    scanf("%d", &N);
+    while(i<=N){
+        sum += i;
+        i+=3;
+    }
+    printf("%d\n",sum);
+}
