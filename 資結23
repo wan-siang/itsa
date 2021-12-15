@@ -1,0 +1,50 @@
+#include	<stdio.h>
+#include	<stdlib.h>
+#include	<string.h>
+#include	<ctype.h>
+#define		MaxLen 50
+
+char *getword(char *line, char *word);
+
+int main(){
+	char line[MaxLen];
+	char word[MaxLen];
+	int ans;
+	int cnt;
+	char *ptr;
+	
+	while(fgets(line,MaxLen,stdin)){
+		if(strncmp(line, "end", 3)==0){
+			break;
+		}
+		ptr = line;
+		int cnt = 0;
+		ans = 0;
+		while((ptr=getword(ptr,word))!=NULL){
+			if(strcmp(word,"+")==0){
+				ptr=getword(ptr,word);
+				ans += atoi(word);
+			}else if(strcmp(word,"-")==0){
+				ptr=getword(ptr,word);
+				ans += atoi(word);
+			}else{
+				ans = atoi(word);
+			}
+		}	
+		printf("%d\n", ans);
+	}
+	
+	
+}
+
+char *getword(char *line, char *word){
+	char *ptr = line;
+	char *qtr = word;
+	while(isspace(*ptr)) ptr++;
+	while(!isspace(*ptr) && *ptr!='\0') *qtr++=*ptr++;
+	*qtr = '\0';
+	if(qtr-word==0){
+		return NULL;
+	}
+	return ptr;
+}
