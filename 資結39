@@ -1,0 +1,95 @@
+#include	<stdio.h>
+#include	<stdlib.h>
+#include	<string.h>
+#include	<ctype.h>
+
+char *getword(char *line, char *word);
+int isfull(int front, int rear, int size);
+int isempty(int front, int rear, int size);
+void pop(int queue[], int size, int front);
+void push(int queue[], int size, int rear, int number);
+
+int main(){
+	int size;
+	int *queue;
+	int front = 1, rear = 1;
+	char line[100];
+	char word[100];
+	int number;
+	
+	scanf("%d",&size);
+	queue = malloc(sizeof(int) * size);
+	
+	while(fgets(line,100,stdin)){
+		char *ptr = line;
+		while((ptr=getword(ptr,word))!=NULL){
+			if(strcmp(word,"0")==0){
+				//dequeue
+				if(isempty(front,rear,size)){
+					printf("EMPTY\n");
+				}	
+				else{
+					pop(queue, size, front);
+					front++;	
+				}	
+				
+			}else if(strcmp(word,"1")==0){
+				//enqueue
+				ptr = getword(ptr,word);
+				number = atoi(word);
+				if(isfull(front, rear, size)){
+					printf("FULL\n");
+				}else{
+					push(queue, size, rear,number);
+					rear++;
+				}	
+				
+			}else if(strcmp(word,"-1")==0){
+				exit(1);
+			}
+		}
+		
+	}
+}
+
+char *getword(char *line, char *word){
+	char *ptr = line;
+	char *qtr = word;
+	
+	while(isspace(*ptr))	ptr++;
+	while(!isspace(*ptr) && *ptr!='\0') *qtr++=*ptr++;
+	*qtr='\0';
+	if(qtr-word==0){
+		return NULL;
+	} 
+	return ptr;
+}
+
+void pop(int queue[], int size, int front){
+	front = front % size;
+	printf("%d\n",queue[front]);
+}
+
+void push(int queue[], int size, int rear, int number){
+	rear = rear % size;
+	queue[rear] = number;
+}
+
+int isempty(int front, int rear, int size){
+	front = front % size;
+	rear = rear % size;
+	if(front==rear){
+		return 1;
+	}
+	return 0;
+}	
+
+int isfull(int front, int rear, int size){
+	front = front % size;
+	rear = rear % size;
+
+	if(front==((rear+1)%size)){
+		return 1;
+	}
+	return 0;
+}
