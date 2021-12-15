@@ -1,0 +1,43 @@
+#include	<stdio.h>
+#include	<stdlib.h>
+
+struct table{
+	int id;
+	int score[3];
+	int avg;
+};
+
+int main(){
+	struct table stu[10];
+	int n;
+	int sum;
+	char id[10];
+	char average[10];
+	
+	scanf("%d",&n);
+	for(int i = 0; i < n; i++){
+		scanf("%s", id);
+		stu[i].id = atoi(id);
+		for(int j=0;j<3;j++){
+			scanf("%d",&stu[i].score[j]);
+		}
+		scanf("%s",average);
+		stu[i].avg = atoi(average);
+	}
+	
+	for(int i = 0; i < n; i++){
+		sum = 0;
+		for(int j = 0; j < 3; j++){
+			sum += stu[i].score[j];
+		}
+		stu[i].avg = sum / 3;
+	}
+	
+	for(int i = 0; i < n; i++){
+		printf("%d ",stu[i].id);
+		for(int j = 0; j < 3; j++){
+			printf("%d ",stu[i].score[j]);
+		}
+		printf("%d\n",stu[i].avg);
+	}
+}
