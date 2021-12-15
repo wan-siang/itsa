@@ -1,0 +1,70 @@
+#include    <stdio.h>
+#include    <stdlib.h>
+#include    <string.h>
+#include    <ctype.h>
+
+struct student{
+	char id[10];
+	double mid;
+	double f;
+	double usual;
+	double avg;
+};
+
+int main(){
+	struct student stu[10];
+	int n, m;	//n:學生人數 :缺席人數
+	char id[10];
+	int hour;
+	int list[10];
+	int avg;
+	
+	scanf("%d", &n);
+	for(int i = 0; i < n; i++){
+        stu[i].avg = 0;
+		scanf("%s", stu[i].id);
+
+		scanf("%lf", &stu[i].mid);
+        stu[i].avg += stu[i].mid*0.3;
+		
+        scanf("%lf", &stu[i].f);
+        stu[i].avg += stu[i].f*0.3;
+
+		scanf("%lf", &stu[i].usual);
+		stu[i].avg += stu[i].usual*0.4;
+	}
+	
+	scanf("%d", &m);
+	for(int i = 0; i < m; i++){
+		scanf("%s", id);
+		scanf("%d", &hour);
+		for(int j = 0; j < n; j++){
+			if(strcmp(id, stu[j].id)==0){
+				if(hour > 6){
+					stu[j].avg -= (hour - 6);
+					if(stu[j].avg<0) stu[j].avg = 0; 
+				}
+				continue;
+			}
+		}
+	}
+	
+	for(int i=0;i<n;i++){
+		list[i] = i;
+	}
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n-1-i;j++){
+			if(strcmp(stu[list[j]].id, stu[list[j+1]].id)>0){
+				int tmp = list[j];
+				list[j] = list[j+1];
+				list[j+1] = tmp;
+			}
+		}
+	}
+	
+	for(int i=0;i<n;i++){
+		printf("%s ", stu[list[i]].id);
+		avg = (int)(stu[list[i]].avg + 0.5);
+		printf("%d\n", avg);
+	}
+}
