@@ -1,0 +1,60 @@
+#include	<stdio.h>
+#include	<stdlib.h>
+
+struct lnode{
+	int num;
+	struct lnode *next;
+};
+
+struct lnode *insert(struct lnode *L, int number){
+    struct lnode *p = (struct lnode *)malloc(sizeof(struct lnode));
+    p->num = number;
+    p->next = L;
+    
+    if(L==NULL){
+        p->next = NULL;
+        return p;
+    }
+    struct lnode *q = L;
+    while(q->next)   q = q -> next;
+    
+    q -> next = p;
+    p -> next = NULL;
+    return L;
+}
+
+struct lnode *invert(struct lnode *L)
+{
+    struct lnode *prev = NULL;
+    struct lnode *current = L;
+    struct lnode *next = L->next;
+    
+    while (next != NULL) {
+        current->next = prev;
+        prev = current;
+        current = next;
+        next = next->next;
+    }
+    current->next = prev;
+    //L = current;
+    return current;
+}
+
+void traverse(struct lnode *L){
+    struct lnode *p = L;
+    while(p->next){
+        printf("%d ",p->num);
+        p=p->next;
+    }
+    printf("%d\n",p->num);
+}
+int main(){
+	struct lnode *list = NULL;
+	int number;
+	
+	while(scanf("%d",&number)!=EOF){
+		list = insert(list,number);
+	}
+	list = invert(list);
+	traverse(list);
+}
