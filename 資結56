@@ -1,0 +1,47 @@
+#include    <stdio.h>
+#include    <stdlib.h>
+#include    <string.h>
+#include    <ctype.h>
+#define maxlen 400
+
+char *getword(char *line, char *word){
+    char *ptr = line;
+    char *qtr = word;
+
+    while(isspace(*ptr)) ptr++;
+    while(!isspace(*ptr) && *ptr!='\0') *qtr++=*ptr++;
+    *qtr='\0';
+    if(qtr-word==0) return NULL;
+    return ptr;
+}
+int main(){
+    char line[maxlen];
+    char word[maxlen];
+    char *ptr;
+    int top;
+    double stack[maxlen];
+
+    while(fgets(line,maxlen,stdin)){
+        ptr = line;
+        top = 0;
+        while((ptr=getword(ptr,word))!=NULL){
+            if(strcmp(word,"+")==0){
+                stack[top-2] = (stack[top-2]*stack[top-2]) + (stack[top-1]*stack[top-1]);
+                top--;
+            }else if(strcmp(word,"-")==0){
+                stack[top-2] = (stack[top-2]*stack[top-2]) - (stack[top-1]*stack[top-1]);
+                top--;
+            }else if(strcmp(word,"*")==0){
+                stack[top-2] = (stack[top-2]*stack[top-2]) * (stack[top-1]*stack[top-1]);
+                top--;
+            }else if(strcmp(word,"/")==0){
+                stack[top-2] = (stack[top-2]*stack[top-2]) / (stack[top-1]*stack[top-1]);
+                top--;
+            }else{
+                stack[top] = atoi(word);
+                top++;
+            }
+        }
+        printf("%.f\n",stack[top-1]);
+    }
+}
