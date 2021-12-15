@@ -1,0 +1,53 @@
+#include    <stdio.h>
+#include    <stdlib.h>
+#include    <string.h>
+#include    <ctype.h>
+
+char *getword(char *line, char *word);
+int main(){
+    int N, a1, a2, a3;
+    char line[20];
+    char word[20];
+    char *ptr;
+    int cost, charge;
+    int one, five, fifty;
+
+    scanf("%s", line);
+    ptr = line;
+    
+    ptr = getword(ptr,word);
+    N = atoi(word);
+
+    ptr = getword(ptr,word);
+    a1 = atoi(word);
+
+    ptr = getword(ptr,word);
+    a2 = atoi(word);
+
+    ptr = getword(ptr,word);
+    a3 = atoi(word);
+
+    cost = a1 * 15 + a2 * 20 + a3 * 30;
+    if(cost>N){
+        printf("0\n");
+        exit(1);
+    }
+    charge = N - cost;
+    fifty = charge / 50;
+    five = (charge-50*fifty) / 5;
+    one = (charge-50*fifty-5*five);
+    printf("%d,%d,%d\n",one,five,fifty);
+}
+
+char *getword(char *line, char *word){
+    char *ptr = line;
+    char *qtr = word;
+
+    while(!isdigit(*ptr)) ptr++;
+    while(isdigit(*ptr)) *qtr++=*ptr++;
+    *qtr='\0';
+    if(qtr-word==0){
+        return NULL;
+    }
+    return ptr;
+}
