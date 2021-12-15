@@ -1,0 +1,58 @@
+#include    <stdio.h>
+
+struct num{
+    int num;
+    int digit_sum;
+};
+
+void sort(struct num *arr, int n);
+void swap(struct num *arr, int left, int right);
+
+int main(){
+    struct num arr[10];
+    int N;
+    int sum, num;
+    int i;
+
+    scanf("%d", &N);
+    for(i = 0; i < N; i++){
+        sum = 0;
+        scanf("%d", &arr[i].num);
+        num = arr[i].num;
+        while(num){
+            sum += num % 10;
+            num /= 10;
+        }
+        arr[i].digit_sum = sum;
+    }
+    
+    sort(arr, N);
+    for(i = 0; i < N-1; i++){
+        printf("%d ", arr[i].num);
+    }
+    printf("%d\n",arr[i].num);
+}
+
+void sort(struct num *arr, int n){
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n-1-i; j++){
+            if(arr[j].digit_sum > arr[j+1].digit_sum){
+                swap(arr, j, j+1);
+            }else if(arr[j].digit_sum == arr[j+1].digit_sum){
+                if(arr[j].num > arr[j+1].num){
+                    swap(arr, j, j+1);
+                }
+            }
+        }
+    }
+}
+
+void swap(struct num *arr, int left, int right){
+    int tmp = arr[left].num;
+    arr[left].num = arr[right].num;
+    arr[right].num = tmp;
+
+    tmp = arr[left].digit_sum;
+    arr[left].digit_sum = arr[right].digit_sum;
+    arr[right].digit_sum = tmp;
+}
