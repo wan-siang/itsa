@@ -1,0 +1,63 @@
+#include    <stdio.h>
+#include    <stdlib.h>
+#include    <string.h>
+#include    <ctype.h>
+
+void add(int num[]);
+void sub(int num[]);
+void mul(int num[]);
+char *getword(char line[], char word[]);
+
+int main(){
+    int n;
+    char opr[5];   //operator
+    int num[4];
+    char line[100];
+    char word[100];
+
+    fgets(line, 100, stdin);
+    n = atoi(line);
+
+    for(int i=0;i<n;i++){
+        fgets(line, 100, stdin);
+        int cnt=0;
+        char *ptr = line;
+        ptr=getword(ptr, word);
+        strcpy(opr,word);
+        while((ptr=getword(ptr, word))!=NULL){
+            num[cnt] = atoi(word);
+            cnt++;
+        }
+        if(strcmp(opr,"+")==0){
+            add(num);
+        }else if(strcmp(opr,"-")==0){
+            sub(num);
+        }else{
+            mul(num);
+        }
+    }
+
+}
+
+char *getword(char *line, char *word){
+    char *ptr=line;
+    char *qtr=word;
+
+    while(isspace(*ptr)) ptr++;
+    while(!isspace(*ptr) && *ptr!='\0') *qtr++=*ptr++;
+    *qtr='\0';
+    if(qtr-word==0) return NULL;
+    return ptr;
+}
+void add(int num[]){
+    printf("%d %d\n", num[0]+num[2], num[1]+num[3]);
+}
+
+void sub(int num[]){
+    printf("%d %d\n", num[0]-num[2], num[1]-num[3]);
+}
+
+void mul(int num[]){
+    printf("%d ",num[0]*num[2]-num[1]*num[3]);
+    printf("%d\n",num[1]*num[2]+num[0]*num[3]);
+}
